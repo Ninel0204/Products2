@@ -1,85 +1,62 @@
 import java.io.*;
-import java.util.Arrays;
 
-public class Basket {
+
+public class Basket implements Serializable {
     protected String[] products;
-    protected int [] productsCountList;
-    protected int [] prices;
+    protected int[] productsCountList;
+    protected int[] prices;
 
-    public Basket (String[]products,int [] prices) {
-       this.products=products;
-       this.prices=prices;
+    public Basket(String[] products, int[] prices) {
+        this.products = products;
+        this.prices = prices;
     }
 
-    public void addToCart(int productNum, int amount){
-        this.productsCountList[productNum]+=amount;
+    public void addToCart(int productNum, int amount) {
+        this.productsCountList[productNum] += amount;
 
     }
 
-    public void printCart(){
+    public void printCart() {
         System.out.println(" Список товаров: ");
-        for(int i =0;i< products.length;i++){
-            System.out.printf("Покупки: " + i+1,products[i],prices[i]);
+        for (int i = 0; i < products.length; i++) {
+            System.out.printf("Покупки: " + i + 1, products[i], prices[i]);
         }
 
     }
-    public void saveTxt(File textFile) {
-        try (BufferedWriter out = new BufferedWriter(new PrintWriter(textFile))) {
-            for (String s : products) {
-                out.append(s + " ");
-                out.newLine();
-            }
-            for (int y : prices) {
-                out.append(y + " ");
-                out.newLine();
-            }
-            for (int i : productsCountList) {
-                out.append(i + " ");
-                out.newLine();
-                out.flush();
-            }
+
+    public void saveBin(File file) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+            out.writeObject(this);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         } catch (IOException e) {
+           e.printStackTrace();
+        }
+    }
+
+    public static Basket loadFromBinFile(File file) {
+        Basket basket = null;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            basket = (Basket) in.readObject();
+        } catch (FileNotFoundException ex) {
+           ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return basket;
     }
 
-        public static Basket loadFromTxtFile(File textFile)  {
-            String[] products;
-             int [] productsCountList;
-             int [] prices;
-            StringBuilder stringBuilder=new StringBuilder();
-            try (BufferedReader bufferedReader=new BufferedReader(new FileReader(textFile))){
-                String stripe;
-                 while ((stripe= bufferedReader.readLine())!=null){
-                     stringBuilder.append(stripe);
-                     stringBuilder.append("/n");
-                 }
-                } catch (FileNotFoundException e) {
-                e.printStackTrace();
-             } catch (IOException e) {
-                e.printStackTrace();
-    }
-          Object[] o = stringBuilder.toString().lines().toArray();
-          products = o[0].toString().split(" ");
-          prices = Arrays.stream(o[1].toString().split(" ")).mapToInt(n -> Integer.parseInt(n)).toArray();
-           productsCountList = Arrays.stream(o[2].toString().split(" ")).mapToInt(n -> Integer.parseInt(n)).toArray();
-
-            Basket basket = new Basket(products, prices);
-            basket.setProductsCountList(productsCountList);
-            return basket;
-        }
-
-   public void setProducts(String[] products) {
-        this.products=products;
+    public void setProducts(String[] products) {
+        this.products = products;
     }
 
     public int[] getProductsCountList() {
         return productsCountList;
     }
 
-    public void setProductsCountList(int[]productsCountList) {
+    public void setProductsCountList(int[] productsCountList) {
         this.productsCountList = productsCountList;
     }
 

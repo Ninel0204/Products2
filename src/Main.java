@@ -1,10 +1,8 @@
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.Scanner;
 
 public class Main {
@@ -25,17 +23,17 @@ public class Main {
             System.out.println(i + 1 + ". " + products[i] + "  " + prices[i] + " руб/шт");
         }
 
-        File basketFile = new File("basket.txt");
+        File basketFile = new File("basket.bin");
         Basket basket = null;
         if (!basketFile.exists()) {
             try {
-                Files.copy(Path.of("template.txt"), Path.of(String.valueOf(basketFile)));
-                basket = Basket.loadFromTxtFile(basketFile);
+                Files.copy(Path.of("template.bin"), Path.of(String.valueOf(basketFile)));
+                basket = Basket.loadFromBinFile(basketFile);
             } catch (IOException e) {
-                e.printStackTrace();
+               e.printStackTrace();
             }
         } else {
-            basket = Basket.loadFromTxtFile(basketFile);
+            basket = Basket.loadFromBinFile(basketFile);
         }
         basket.printCart();
 
@@ -57,7 +55,7 @@ public class Main {
                 productCount = Integer.parseInt(number[1]);
                 x[productNumber] += productCount;
                 basket.addToCart(productNumber, productCount);
-                basket.saveTxt(basketFile);
+                basket.saveBin(basketFile);
                 if (productCount < 0) {
                     System.out.println("В параметре необходимо указать количество продукта положительное");
                 }
@@ -78,8 +76,6 @@ public class Main {
             System.out.println("Итого " + sumProducts + " руб ");
 
         }
-
-
     }
 }
 
