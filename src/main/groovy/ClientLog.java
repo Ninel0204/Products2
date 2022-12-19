@@ -26,6 +26,5 @@ public class ClientLog {
         }
     }
 
-    public void log(String s, String s1) {
-    }
+    
 }
