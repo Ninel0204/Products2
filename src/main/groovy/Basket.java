@@ -97,7 +97,7 @@ public class Basket  {
         this.prices = prices;
     }
 
-    public void Json(File fileName) {
+    public void saveJson(File fileName) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
 
@@ -109,7 +109,7 @@ public class Basket  {
         }
     }
 
-    public static Basket Json1 (File jsonFile) {
+    public static Basket downloadJson (File jsonFile) {
         Basket basket;
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
