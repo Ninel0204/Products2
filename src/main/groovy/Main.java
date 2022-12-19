@@ -33,7 +33,7 @@ import java.util.Scanner;
                 try {
                     if (setup.getLFormat().equalsIgnoreCase("json")) {
                         Files.copy(Path.of("template.json"), Path.of(String.valueOf(file)));
-                        basket = Basket.Json1(file);
+                        basket = Basket.downloadJson(file);
                     } else {
                         Files.copy(Path.of("template.txt"), Path.of(String.valueOf(file)));
                         basket = Basket.loadFromTxtFile(file);
@@ -44,9 +44,9 @@ import java.util.Scanner;
             } else {
                 if (setup.getLFormat().equalsIgnoreCase("json")) {
                     if (setup.getLEnabled().equalsIgnoreCase("true")) {
-                        basket = Basket.Json1(file);
+                        basket = Basket.downloadJson(file);
                     } else {
-                        basket = Basket.Json1(new File("template.json"));
+                        basket = Basket.downloadJson(new File("template.json"));
                     }
                 } else {
                     if (setup.getLEnabled().equalsIgnoreCase("true")) {
@@ -83,7 +83,7 @@ import java.util.Scanner;
                     basket.addToCart(productNumber, productCount);
                     if (setup.getSFormat().equalsIgnoreCase("json")) {
                         if (setup.getSEnabled().equalsIgnoreCase("true")) {
-                            basket.Json(new File(setup.getSFileName()));
+                            basket.saveJson(new File(setup.getSFileName()));
                         }
                     } else {
                         if (setup.getSEnabled().equalsIgnoreCase("true")) {
